@@ -1,7 +1,6 @@
 class InputOutputHandler
 
-  attr_accessor :width, :height
-  attr_reader :cells
+  attr_reader :cells, :width, :height
 
   def initialize
     @width = 0
