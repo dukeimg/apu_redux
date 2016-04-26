@@ -1,46 +1,30 @@
-require './lib/apu'
+require './lib/scheme'
 
-describe 'Apu' do
-  it 'finds right close node' do
-    @width = 2
-    @height = 1
-    @cells = ['0' '0']
-    expect(check(0, 0)).to eq('0 0 1 0 -1 -1')
+describe Scheme do
+  describe '.check' do
+
+    let(:scheme) { Scheme.new(:height => 4, :width => 4,
+                              :cells => [
+                                  ['0', '0', '.', '0'],
+                                  ['0', '.', '0', '0'],
+                                  ['.', '0', '.', '0'],
+                                  ['0', '0', '0', '.']
+                              ]) }
+
+    it 'finds close nodes' do
+      expect(scheme.check(0, 0)).to eq('0 0 1 0 0 1')
+    end
+
+    it 'finds distanced nodes' do
+      expect(scheme.check(1, 0)).to eq('0 1 2 1 0 3')
+    end
+
+    it 'handling none neighbors' do
+      expect(scheme.check(3, 2)).to eq('2 3 -1 -1 -1 -1')
+    end
+
+    it 'does not exist' do
+      expect(scheme.check(3, 3)).to eq(nil)
+    end
   end
-
-  it 'finds right distanced node' do
-    @width = 3
-    @height = 1
-    @cells = ['0' '.' '0']
-    expect(check(0, 0)).to eq('0 0 2 0 -1 -1')
-  end
-
-  it 'finds bottom close node' do
-    @width = 1
-    @height = 2
-    @cells = [['0'], ['0']]
-    expect(check(0, 0)).to eq('0 0 -1 -1 0 1')
-  end
-
-  it 'finds bottom distanced node' do
-    @width = 1
-    @height = 5
-    @cells = [['0'], ['.'], ['.'], ['.'], ['0']]
-    expect(check(0, 0)).to eq('0 0 -1 -1 0 4')
-  end
-
-  it 'has no neighbors' do
-    @width = 2
-    @height = 2
-    @cells = [['0', '.'], ['.', '0']]
-    expect(check(0, 0)).to eq('0 0 -1 -1 -1 -1')
-  end
-
-  it 'does not exist' do
-    @width = 2
-    @height = 2
-    @cells = [['.', '0'], ['0', '0']]
-    expect(check(0, 0)).to eq(nil)
-  end
-
 end
